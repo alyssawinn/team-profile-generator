@@ -215,7 +215,7 @@ addManager.prototype.addTeamMember = function() {
 
 new addManager()
     .then(this.addTeamMember)
-    .then(teamData => {
+    /* .then(teamData => {
         return generatePage(teamData);
     })
     .then(pageHTML => {
@@ -230,4 +230,4 @@ new addManager()
     })
     .catch (err => {
         console.log(err);
-    })
+    }) */
