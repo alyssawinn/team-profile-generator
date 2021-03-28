@@ -66,6 +66,7 @@ function addManager() {
         }
     ]).then(({employeeName, employeeId, employeeEmail, managerOfficeNum}) => {
         this.manager = new Manager(employeeName, employeeId, employeeEmail, managerOfficeNum);
+        this.addTeamMember();
         //console.log(this.manager.getRole());
         //this.role = this.manager.getRole();
         //this.manager['role'] = this.role;
@@ -214,7 +215,6 @@ addManager.prototype.addTeamMember = function() {
 }
 
 new addManager()
-    .then(this.addTeamMember)
     /* .then(teamData => {
         return generatePage(teamData);
     })
