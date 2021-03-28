@@ -1,13 +1,12 @@
 const inquirer = require('inquirer');
-const fs = require('fs');
-const Employee = require('./lib/Employee');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
-const teamData = [];
+const { writeFile, copyFile } = require('./utils/generate-site.js');
+const generatePage = require('./src/page-template.js');
 
 
-function promptManager() {
+function addManager() {
     return inquirer.prompt ([
         {
             //Manager name
@@ -60,23 +59,27 @@ function promptManager() {
                 if (managerOfficeNumInput) {
                     return true;
                 } else {
-                    console.log("Please enter the team manager's email");
+                    console.log("Please enter the team manager's office number");
                     return false;
                 }
             }
         }
-    ]).then(managerData => {
-        teamData.push(managerData);
-        addTeamMember();
+    ]).then(({employeeName, employeeId, employeeEmail, managerOfficeNum}) => {
+        this.manager = new Manager(employeeName, employeeId, employeeEmail, managerOfficeNum);
+        //console.log(this.manager.getRole());
+        //this.role = this.manager.getRole();
+        //this.manager['role'] = this.role;
+        //this.teamData.push(this.manager);
+        //console.log(this.teamData);
     })
 };
 
-function addTeamMember() {
+addManager.prototype.addTeamMember = function() {
     return inquirer.prompt(
         {
             type: 'list',
             name: 'anotherEmployee',
-            message: 'Would you like to add an engineer, intern, or are you done adding employees?',
+            message: 'Would you like to add an engineer, intern, or are you building your team?',
             choices: ['Engineer', 'Intern', "I'm done"]
         }
     ).then(teamMemberType => {
@@ -99,7 +102,7 @@ function addTeamMember() {
                 {
                     //Employee ID
                     type: 'input',
-                    name: 'employeeEmpId',
+                    name: 'employeeId',
                     message: "Engineer's employee ID: (Required)",
                     validate: engineerEmpIdInput => {
                         if (engineerEmpIdInput) {
@@ -138,9 +141,9 @@ function addTeamMember() {
                         }
                     }
                 }
-            ]).then(engineerData => {
-                teamData.push(engineerData);
-                addTeamMember();
+            ]).then(({employeeName, employeeId, employeeEmail, engineerGitHub}) => {
+                this.engineer = new Engineer(employeeName, employeeId, employeeEmail, engineerGitHub);
+                this.addTeamMember();
             })
         } else if (teamMemberType.anotherEmployee === 'Intern') {
             return inquirer.prompt ([
@@ -161,7 +164,7 @@ function addTeamMember() {
                 {
                     //Employee ID
                     type: 'input',
-                    name: 'employeeEmpId',
+                    name: 'employeeId',
                     message: "Intern's employee ID: (Required)",
                     validate: internEmpIdInput => {
                         if (internEmpIdInput) {
@@ -200,9 +203,9 @@ function addTeamMember() {
                         }
                     }
                 }
-            ]).then(internData => {
-                teamData.push(internData);
-                addTeamMember();
+            ]).then(({employeeName, employeeId, employeeEmail, internSchool}) => {
+                this.intern = new Intern(employeeName, employeeId, employeeEmail, internSchool);
+                this.addTeamMember();
             })
         } else {
             return teamMemberType;
@@ -210,4 +213,21 @@ function addTeamMember() {
     })
 }
 
-promptManager();
+new addManager()
+    .then(this.addTeamMember)
+    .then(teamData => {
+        return generatePage(teamData);
+    })
+    .then(pageHTML => {
+        return writeFile(pageHTML);
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse);
+    })
+    .catch (err => {
+        console.log(err);
+    })
