@@ -2,11 +2,13 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
-const { writeFile, copyFile } = require('./utils/generate-site.js');
-const generatePage = require('./src/page-template.js');
+const { writeFile, copyFile } = require('./utils/generate-site');
+const generatePage = require('./src/page-template');
+let teamData = [];
 
 
-function addManager() {
+const addManager = () => {
+    
     return inquirer.prompt ([
         {
             //Manager name
@@ -65,17 +67,17 @@ function addManager() {
             }
         }
     ]).then(({employeeName, employeeId, employeeEmail, managerOfficeNum}) => {
-        this.manager = new Manager(employeeName, employeeId, employeeEmail, managerOfficeNum);
-        this.addTeamMember();
-        //console.log(this.manager.getRole());
-        //this.role = this.manager.getRole();
-        //this.manager['role'] = this.role;
-        //this.teamData.push(this.manager);
-        //console.log(this.teamData);
+        let manager = new Manager(employeeName, employeeId, employeeEmail, managerOfficeNum);
+        teamData.push(manager);
     })
 };
 
-addManager.prototype.addTeamMember = function() {
+const addTeamMember = () => {
+    console.log(`
+    ===============
+    Add Team Member
+    ===============
+    `)
     return inquirer.prompt(
         {
             type: 'list',
@@ -143,8 +145,9 @@ addManager.prototype.addTeamMember = function() {
                     }
                 }
             ]).then(({employeeName, employeeId, employeeEmail, engineerGitHub}) => {
-                this.engineer = new Engineer(employeeName, employeeId, employeeEmail, engineerGitHub);
-                this.addTeamMember();
+                let engineer = new Engineer(employeeName, employeeId, employeeEmail, engineerGitHub);
+                teamData.push(engineer);
+                return addTeamMember();
             })
         } else if (teamMemberType.anotherEmployee === 'Intern') {
             return inquirer.prompt ([
@@ -205,17 +208,19 @@ addManager.prototype.addTeamMember = function() {
                     }
                 }
             ]).then(({employeeName, employeeId, employeeEmail, internSchool}) => {
-                this.intern = new Intern(employeeName, employeeId, employeeEmail, internSchool);
-                this.addTeamMember();
+                let intern = new Intern(employeeName, employeeId, employeeEmail, internSchool);
+                teamData.push(intern);
+                return addTeamMember();
             })
         } else {
-            return teamMemberType;
+            return teamData;
         }
     })
 }
 
-new addManager()
-    /* .then(teamData => {
+addManager()
+    .then(addTeamMember)
+    .then(teamData => {
         return generatePage(teamData);
     })
     .then(pageHTML => {
@@ -230,4 +235,4 @@ new addManager()
     })
     .catch (err => {
         console.log(err);
-    }) */
+    });

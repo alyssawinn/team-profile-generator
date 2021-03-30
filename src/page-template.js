@@ -1,8 +1,10 @@
-const generateManager = managerObj => {
+const generateTeam = teamDataArr => {
     return `
+    ${teamDataArr
+        .map(({}))}
     <card>
         <div>
-        <h2>${employeeName}</h2>
+        <h2>${managerData.getName()}</h2>
         </div>
         <div>
         <div></div>
@@ -10,5 +12,12 @@ const generateManager = managerObj => {
         <div></div>
         </div>
     </card>
+    `
+}
+
+module.exports = teamData => {
+    return `
+        <div>My team</div>
+        <div>${teamData[0].name}</div>
     `
 }
