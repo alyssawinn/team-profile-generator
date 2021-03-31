@@ -25,7 +25,7 @@ A Node.js command-line application where a user enters information about the man
   N/A
 
   ## Tests
-  Each of the class constructors have been tested. To do your own tests, use the command 'npm run test' in the terminal to see each of the tests in the __tests__ directory pass.
+  Each of the class constructors have been tested. To do your own tests, install Jest using the command 'npm install --save-dev jest' in your terminal and then use the command 'npm run test' to see each of the tests in the __tests__ directory pass.
 
   ## Questions
   If you have any questions, please contact me at [alyssawinn2@gmail.com](mailto:alyssawinn2@gmail.com) or visit my GitHub page [here](https://github.com/alyssawinn/)
