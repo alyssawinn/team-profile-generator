@@ -1,47 +1,62 @@
 const generateTeam = teamDataArr => {
     return `
     ${teamDataArr
-        .filter(({ role }) => role.getRole() === 'Manager')
-        .map(({ name, id, email, officeNum }) => {
+        .filter(( role ) => role.getRole() === 'Manager')
+        .map((employee) => {
             return `
                 <div class="card m-2" style="width: 18rem;">
                     <div class="card-header bg-primary text-white">
-                        <h3>${name}</h3>
+                        <h3>${employee.name}</h3>
                         <h4><span class="fas fa-mug-hot px-1"></span>Manager</h4>
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">ID: ${id}</li>
-                        <li class="list-group-item">Email: <a href="mailto:${email}">${email}</a></li>
-                        <li class="list-group-item">Office number: ${officeNum}</li>
+                        <li class="list-group-item">ID: ${employee.id}</li>
+                        <li class="list-group-item">Email: <a href="mailto:${employee.email}">${employee.email}</a></li>
+                        <li class="list-group-item">Office number: ${employee.officeNum}</li>
                     </ul>
                 </div>
             `;
         })
         .join('')}
-        
-      <div class="card m-2" style="width: 18rem;">
-        <div class="card-header bg-primary text-white">
-          <h3>Sally</h3>
-          <h4><span class="fas fa-glasses px-1"></span>Engineer</h4>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">ID: 2</li>
-          <li class="list-group-item">Email: sally@fakemail.com</li>
-          <li class="list-group-item">Github: <a href="https://github.com/sallysmells">sallysmells</a></li>
-        </ul>
-      </div>
-      <div class="card m-2" style="width: 18rem;">
-        <div class="card-header bg-primary text-white">
-          <h3>John</h3>
-          <h4><span class="fas fa-user-graduate px-1"></span>Intern</h4>
-        </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">ID: 3</li>
-          <li class="list-group-item">Email: john@fakemail.com</li>
-          <li class="list-group-item">School: Utah State University</li>
-        </ul>
-      </div>
-    `
+
+        ${teamDataArr
+            .filter(( role ) => role.getRole() === 'Engineer')
+            .map((employee) => {
+                return `
+                    <div class="card m-2" style="width: 18rem;">
+                        <div class="card-header bg-primary text-white">
+                            <h3>${employee.name}</h3>
+                            <h4><span class="fas fa-glasses px-1"></span>Engineer</h4>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">ID: ${employee.id}</li>
+                            <li class="list-group-item">Email: <a href="mailto:${employee.email}">${employee.email}</a></li>
+                            <li class="list-group-item">Github: <a href="https://github.com/${employee.github}">${employee.github}</a></li>
+                        </ul>
+                    </div>
+                `;
+            })
+            .join('')}
+
+            ${teamDataArr
+                .filter(( role ) => role.getRole() === 'Intern')
+                .map((employee) => {
+                    return `
+                        <div class="card m-2" style="width: 18rem;">
+                            <div class="card-header bg-primary text-white">
+                                <h3>${employee.name}</h3>
+                                <h4><span class="fas fa-user-graduate px-1"></span>Intern</h4>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">ID: ${employee.id}</li>
+                                <li class="list-group-item">Email: <a href="mailto:${employee.email}">${employee.email}</a></li>
+                                <li class="list-group-item">School: ${employee.school}</li>
+                            </ul>
+                        </div>
+                    `;
+                })
+                .join('')}
+                `
 }
 
 module.exports = teamData => {
