@@ -2,7 +2,7 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
-const { writeFile, copyFile } = require('./utils/generate-site');
+const { writeFile } = require('./utils/generate-site');
 const generatePage = require('./src/page-template');
 let teamData = [];
 
@@ -228,10 +228,6 @@ addManager()
     })
     .then(writeFileResponse => {
         console.log(writeFileResponse);
-        return copyFile();
-    })
-    .then(copyFileResponse => {
-        console.log(copyFileResponse);
     })
     .catch (err => {
         console.log(err);
